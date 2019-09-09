@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+    <link rel="stylesheet" href="../../static/editor/css/editormd.css">
+</head>
+<body>
+<div id="select" style="display: none">{{ context.cid }}</div>
+<div id="textarea" style="display: none">{{ context.content }}</div>
+<form id="form" action="" method="post">
+    <input name="title" value="{{ context.title }}" placeholder="请输入标题"/>
+<select class="select" name="cid">
+    <option value="1">python</option>
+    <option value="2">linux</option>
+    <option value="3">spark</option>
+    <option value="4">mysql</option>
+    <option value="5">redis</option>
+    <option value="6">mongo</option>
+    <option value="7">开发工具</option>
+    <option value="8">vue.js</option>
+</select>
+        <button type="submit">确定</button>
+
+  <div id="test-editormd">
+    <textarea name="content" class="textarea" style="display:none;"></textarea>
+</div>
+</form>
+
+</body>
+<script type="text/javascript" src="../../static/editor/jquery.min.js"></script>
+<script type="text/javascript" src="../../static/editor/editormd.js"></script>
+<script>
+$(function() {
+  testEditor = editormd("test-editormd", {
+          width: "100%",
+          // autoHeight: true,
+          height: 640,
+          syncScrolling: "single",
+          path: "../../static/editor/lib/",
+          saveHTMLToTextarea: false,
+      onload: function () {
+          {#this.previewing()#}
+      }
+      });
+  function getUrlParam() {
+        var url = (location.search); //获取url中"?"符后的字符串包括‘？’ ，window.location.href获取的是url完整的字符串
+        var theParam = new Object();
+        if (url.indexOf("?") != -1) { //确保‘？’不是最后一个字符串，即携带的参数不为空
+            var str = url.substr(1); //substr是字符串的用法之一，抽取指定字符的数目，这里抽取？后的所有字符
+            strs = str.split("&"); //将获取到的字符串从&分割，输出参数数组，即输出[参数1=xx,参数2=xx,参数3=xx,...]的数组形式
+            for (var i = 0; i < strs.length; i++) { //遍历参数数组
+                theParam[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]); //这里意思是抽取每个参数等号后面的值，unescape是解码的意思
+            }
+        }
+        return theParam; //返回参数值
+    }
+    var aid = getUrlParam().aid
+    var uid = getUrlParam().uid
+
+    $('#form').attr('action',  `/article/edit_article_handle/?aid=${aid}&uid=${uid}`)
+
+    var content = $('#textarea').html()
+    var select = $('#select').html()
+    $('.select').val(select)
+    $('.textarea').val(content)
+
+})
+</script>
+</html>

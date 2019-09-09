@@ -1,0 +1,368 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    {% load url from future %}
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!--[if lt IE 9]>
+
+<script type="text/javascript" src={% static '../static/hou/lib/html5shiv.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/lib/respond.min.js' %}></script>
+<![endif]-->
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/static/h-ui/css/H-ui.min.css' %}/>
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/lib/Hui-iconfont/1.0.8/iconfont.min.css' %}/>
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/admin.css' %}/>
+    <!--[if lt IE 9]>
+<link href={% static '../static/hou/static/h-ui/css/H-ui.ie.css' %} rel="stylesheet" type="text/css" />
+<![endif]-->
+    <!--[if IE 6]>
+<script type="text/javascript" src={% static '../static/hou/lib/DD_belatedPNG_0.0.8a-min.js' %} ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+
+    <style type="text/css">
+        .ui-sortable .panel-header {
+            cursor: move
+        }
+    </style>
+    <title>星链组博客-后台</title>
+    <meta name="keywords" content="关键词,5个左右,单个8汉字以内">
+    <meta name="description" content="网站描述，字数尽量空制在80个汉字，160个字符以内！">
+</head>
+<body ontouchstart>
+<div class="containBox">
+    <div class="containBox-bg"></div>
+    <header class="navbar-wrapper">
+        <div class="navbar navbar-black navbar-fixed-top">
+            <div class="container cl">
+                <a class="logo navbar-logo hidden-xs">星链组博客-管理后台</a>
+                <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs JS-nav-toggle" href="javascript:;">&#xe667;</a>
+                <nav class="nav navbar-nav nav-collapse" role="navigation" id="Hui-navbar">
+                    <ul class="cl">
+                        <li class="current" style="margin-left: 400px;">
+                            <a href="{% url 'info' uid 1 %}">文章管理</a>
+                        </li>
+                        <li>
+                            {#							<a href="/column_list/?uid={{ uid }}" >分类管理</a>#}
+                            <a href="{% url 'column_list' uid %}">分类管理</a>
+                        </li>
+                          <li class="dropDown dropDown_hover" style="float: right">
+                            <a href="javascript:;" class="dropDown_A">{{ username }}<img class="down-icon"
+                                                                                         src={% static '../static/img/down.png' %}></a>
+                            <ul class="dropDown-menu menu radius box-shadow">
+                                <li>
+                                         <a href="javascript:;" onclick="out({{ uid }})">退出登陆</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </nav>
+                <nav class="navbar-userbar hidden-xs"></nav>
+            </div>
+        </div>
+    </header>
+    <div class="wap-container">
+        <div class="container ui-sortable">
+            <div style="overflow: hidden;">
+                {#                <h1 style="float: left;">文章管理</h1>#}
+                {#                <a style="background: #0000cc; color: #ffffff" href="/article/add_article/?uid={{ uid }}">#}
+
+            </div>
+            <div class="panel panel-default mt-20">
+                <div class="panel-header">我的文章</div>
+                <div class="panel-body">
+                    {#                    <form action="/article/info/?uid={{ uid }}" method="post" class="form form-horizontal responsive"#}
+                    <form action="{% url 'info' uid 1 %}" method="post" class="form form-horizontal responsive"
+                          id="form" novalidate="novalidate">
+                        <div class="row" style="overflow: hidden; margin-bottom: 20px;">
+
+                            <div class="col-xs-4">
+                                <div class="formControls">
+                                    <input value="{{ title }}" type="text" class="input-text" placeholder="请输入标题"
+                                           name="title" id="username">
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <span class="select-box" search="{{ cid }}">
+                                    <select class="select" name="cid">
+                                        <option value="0">全部</option>
+                                        {% for i in context_c %}
+                                            <option value="{{ i.cid }}">{{ i.column_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </div>
+                            <div class="col-xs-2">
+                                <input class="btn btn-primary" type="submit" value="&nbsp;&nbsp;确定&nbsp;&nbsp;">
+                            </div>
+                         <div class="col-xs-2">
+                               <a style="background: #0000cc; color: #ffffff" href="{% url 'add_article' uid %}">
+                                    <input class="btn btn-warning " type="button" value="&nbsp;&nbsp;新增&nbsp;&nbsp;">
+                               </a>
+                            </div>
+
+                        </div>
+                    </form>
+                    {% if context|wordcount > 1 %}
+                        <table class="table table-border table-bordered table-bg">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>标题</th>
+                                <th>分类</th>
+                                <th>添加时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in context %}
+                                <tr>
+                                    <td>{{ i.aid }}</td>
+                                    <td>{{ i.title }}</td>
+                                    <td>
+                                        {% if i.cid == 1 %}
+                                            <span class="label label-default radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 2 %}
+                                            <span class="label label-blue radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 3 %}
+                                            <span class="label label-secondary radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 4 %}
+                                            <span class="label label-success radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 5 %}
+                                            <span class="label label-warning radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 6 %}
+                                            <span class="label label-danger radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 7 %}
+                                            <span class="label label-purple radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                        {% if i.cid == 8 %}
+                                            <span class="label label-bonus radius">{{ i.column_name }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ i.addtime }}</td>
+                                    <td>
+
+                                        {% load url from future %}
+                                        <a href="{% url 'edit_article' i.aid i.cid uid %}"
+                                           itemprop="url">
+                                            编辑
+                                        </a>
+                                        {#                                         <a herf="javascript:;" id="top({{ i.aid }})">置顶</a>#}
+                                        <a  target="_blank" href="{% url 'article_detail' i.aid %}"
+                                           itemprop="url">
+                                            预览
+                                        </a>
+                                        <a herf="javascript:;" onClick="modaldemo({{ i.aid }})">删除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <ul class="paging">
+
+                            <nav class="reade_more">
+                                {% for i in page_num %}
+                                    {% if i == pindex %}
+                                        <span class='page-numbers current'>
+                            <li class="active"> {{ i }}</li>
+                             </span>
+                                    {% else %}
+                                        {#                                        <li><a class='page-numbers'#}
+                                        {#                                               href="/article/info/?uid={{ uid }}&page={{ i }}">{{ i }}</a></li>#}
+                                        <li><a class='page-numbers'
+                                               href="/info/{{ uid }}/{{ i }}.html">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </nav>
+                        </ul>
+                    {% else %}
+                        <img class="empty-img" src={% static '../static/img/empty.jpg' %}/>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+        </div>
+        <footer class="footer mt-20">
+            <div class="container">
+                <nav class="footer-nav">
+                    <a target="_blank" href="http://www.h-ui.net/aboutHui.shtml">关于H-ui</a>
+                    <span class="pipe">|</span>
+                    <a target="_blank" href="http://www.h-ui.net/copyright.shtml">软件著作权</a>
+                    <span class="pipe">|</span>
+                    <a target="_blank" href="http://www.h-ui.net/juanzeng.shtml">感谢捐赠</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+</div>
+<!--普通弹出层-->
+<div id="modal-demo" class="modal fade middle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content radius">
+            <div class="modal-header">
+                <h3 class="modal-title">提示</h3>
+                <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+            </div>
+            <div class="modal-body">
+                <p>确定删除这条信息?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="delect" onclick="sure({{ uid }})">确定</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src={% static '../static/hou/lib/jquery/1.9.1/jquery.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/lib/jquery-ui/1.9.1/jquery-ui.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/static/h-ui/js/H-ui.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.SuperSlide/2.1.1/jquery.SuperSlide.min.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/jquery.validate.min.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/validate-methods.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/messages_zh.min.js' %}></script>
+<script>
+
+    var search_column = $('.select-box').attr('search')
+    $('.select').val(search_column)
+
+    //弹窗显示
+    function modaldemo(aid) {
+        $('#delect').attr('aid', aid)
+        $("#modal-demo").modal("show");
+    }
+
+    // 确定删除
+    function sure(uid) {
+        var aid = $('#delect').attr('aid')
+        console.log(aid)
+        ajaxFuction('/del_article/', {'uid': uid, 'aid': aid}, function (res) {
+            if (res.data) {
+                $("#modal-demo").modal("hide");
+                window.location.href = '/info/{{ uid }}/p1.html'
+            }
+        })
+    }
+
+    // 查询
+
+    // 退出登陆
+      function out(uid) {
+        {#ajaxFuction('/article/quit/', {'uid': uid}, function (res) {#}
+        ajaxFuction('/quit/', {'uid': uid}, function (res) {
+            if (res.data) {
+                {#window.location.href = '/article/login'#}
+                window.location.href = '/login'
+            }
+        })
+    }
+    function ajaxFuction(ajaxUrl, data, callback) {
+        if (!Boolean(data)) {
+            data = {}
+        }
+        if (!Boolean(callback)) {
+            callback = function (_) {
+            }
+        }
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: ajaxUrl,
+            data: data,
+            success: function (res) {
+                callback(res)
+            }
+        })
+    }
+
+
+
+
+    var likeArr = JSON.parse(localStorage.getItem('like_ids'))
+        if (likeArr) {
+            if (likeArr.includes({{ aid }})) {
+                $('#top').addClass('done')
+            }
+        }
+
+
+        $('#top').on('click', function () {
+            var likeArr = JSON.parse(localStorage.getItem('like_ids'))
+            if (likeArr) {
+                if (likeArr.includes({{ aid }})) {
+                    alert('已置顶~')
+                } else {
+                    likeAction(function () {
+                        console.log(likeArr, typeof (likeArr))
+                        var likeIds = likeArr.push({{ aid }})
+                        $('#like').addClass('done')
+                        var count = $('.count').html()
+                        $('.count').html(Number(count) + 1)
+                        localStorage.setItem('like_ids', JSON.stringify(likeArr))
+                    })
+                }
+            } else {
+                likeAction(function () {
+                    var likeIds = []
+                    likeIds.push({{ aid }})
+                    localStorage.setItem('like_ids', JSON.stringify(likeIds))
+
+                    var count = $('.count').html()
+                    $('.count').html(Number(count) + 1)
+                    $('#like').addClass('done')
+                })
+
+            }
+        })
+
+        function likeAction(callback) {
+            ajaxFuction('/top_article/', {'aid':  aid }, function (res) {
+                if (res.data) {
+                    callback()
+                }
+            })
+        }
+
+        function ajaxFuction(ajaxUrl, data, callback) {
+            if (!Boolean(data)) {
+                data = {}
+            }
+            if (!Boolean(callback)) {
+                callback = function (_) {
+                }
+            }
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: ajaxUrl,
+                data: data,
+                success: function (res) {
+                    callback(res)
+                }
+            })
+        }
+
+
+</script>
+</body>
+</html>

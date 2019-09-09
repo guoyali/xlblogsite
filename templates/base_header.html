@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    {% load staticfiles %}
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href={% static '../static/css/style.css' %} type="text/css" rel="stylesheet">
+    <title>悉知技术博客-星链组</title>
+    <link rel='stylesheet'
+          href={% static '../static/css/style.min.css' %} type='text/css'/>
+    <link rel='stylesheet'
+          href={% static '../static/css/googlecode.css' %} type='text/css'/>
+    <link rel='stylesheet'
+          href={% static '../static/css/pure-highlight.css' %} type='text/css' media='all'/>
+    <script type='text/javascript' src={% static '../static/js/jquery.min.js' %}></script>
+    <script type='text/javascript' src={% static '../static/js/script.js' %}></script>
+    <script type='text/javascript' src={% static '../static/js/prettify.js' %}></script>
+    <script type='text/javascript' src={% static '../static/js/instantclick.min.js' %}></script>
+    <style>
+        .main-box img {
+            max-width: 100px;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <section class="container">
+        <hgroup itemscope itemtype="https://schema.org/WPHeader">
+            <h1 class="fullname">{% block title %}{% endblock %}</h1>
+        </hgroup>
+        <nav class="social">
+            <ul id="menu-share" class="menu">
+                <li style="background: url('/static/img/github.jpg') no-repeat; background-size: 100% 100%; width: 30px;height: 20px">
+                    <a title="GitHub" target="_blank" href="https://github.com/">GitHub</a></li>
+
+                <li style="background: url('/static/img/work.png') no-repeat; background-size: 100% 100%; width: 20px;height: 20px">
+                   <a title="后台" target="_blank" href="https://wiki.xzteam.com/login/">后台</a></li>
+            </ul>
+        </nav>
+        {% block myInfo %}{% endblock %}
+        <nav class="header_nav">
+            <ul id="menu-menu" class="menu">
+                {% load url from future %}
+
+                <li id="menu-item-11"
+                    class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-11">
+                    <a href="/article/p1.html/">首页</a></li>
+                {% for i in context_c %}
+                    {#                    {{ i }}#}
+                    <li id="menu-item-7"
+                        class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a
+                            href="/{{ i.1 }}/p1.html/">{{ i.0 }}</a></li>
+                {% endfor %}
+
+                {#                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a#}
+                {#                        href="/article_1/">{{ context_1 }}</a></li>#}
+                {#                <li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a#}
+                {#                        href="/article_2/">{{ context_2 }}</a></li>#}
+                {#                <li id="menu-item-43" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-43">#}
+                {#                    <a href="/article_3/">{{ context_3 }}</a></li>#}
+                {#                <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">#}
+                {#                    <a href="/article_4/">{{ context_4 }}</a></li>#}
+                {#                <li id="menu-item-43" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-43">#}
+                {#                    <a href="/article_5/">{{ context_5 }}</a></li>#}
+                {#                <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">#}
+                {#                    <a href="/article_6/">{{ context_6 }}</a></li>#}
+                {#                <li id="menu-item-43" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-43">#}
+                {#                    <a href="/article_7/">{{ context_7 }}</a></li>#}
+                {#                <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">#}
+                {#                    <a href="/article_8/">{{ context_8 }}</a></li>#}
+            </ul>
+        </nav>
+    </section>
+    <section class="infos">
+        <div class="container">
+            <h2 class="fixed-title"></h2>
+            <div class="fixed-menus"></div>
+            <div class="placard">
+                每个人的日记，记录的是每个人的成长
+            </div>
+        </div>
+    </section>
+
+</header>
+
+{% block content %}{% endblock content %}
+
+<footer class="footer">
+    <section class="container">
+        <ul id="menu-footer" class="menu">
+            <li id="menu-item-31" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a
+                    target="_blank" href="//www.gongchang.com">工厂网</a></li>
+            <li id="menu-item-30" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30"><a
+                    target="_blank" href="//work.westarchain.com">星链</a></li>
+            <li id="menu-item-129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-129"><a
+                    target="_blank" href="//test.work.xingkuang.com">星矿</a></li>
+            <li id="menu-item-129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-129"><a
+                    target="_blank" href="https://wiki.xzteam.com/login/">管理后台</a></li>
+        </ul>
+        <p  style="text-align: center">
+            <span >&copy; 2019 <a href="javascript:;">悉知技术博客-星链组</a></span>
+
+        </p>
+    </section>
+</footer>
+</body>
+<script>
+    var href = window.location.href
+
+    if (href.indexOf('article') != -1) {
+        $('#menu-menu li').eq(0).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_1') != -1) {
+        $('#menu-menu li').eq(1).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_2') != -1) {
+        $('#menu-menu li').eq(2).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_3') != -1) {
+        $('#menu-menu li').eq(3).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_4') != -1) {
+        $('#menu-menu li').eq(4).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_5') != -1) {
+        $('#menu-menu li').eq(5).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_6') != -1) {
+        $('#menu-menu li').eq(6).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_7') != -1) {
+        $('#menu-menu li').eq(7).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+    if (href.indexOf('article_8') != -1) {
+        $('#menu-menu li').eq(8).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+</script>
+</html>

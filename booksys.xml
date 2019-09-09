@@ -1,0 +1,14 @@
+<uwsgi>
+    <socket>0.0.0.0:8008</socket>
+    <protocol>http</protocol>
+    <master>true</master>
+    <harakiri>10</harakiri>
+    <chdir>./</chdir>
+    <module>django_wsgi</module>
+    <processes>5</processes> <!-- 进程数 -->
+    <max-requests>1000</max-requests>
+    <pidfile>uwsgi_blogsite.pid</pidfile>
+    <buffer-size>32768</buffer-size>
+    <daemonize>uwsgi_blogsite.log</daemonize>
+    <disable-logging>false</disable-logging>
+</uwsgi>   

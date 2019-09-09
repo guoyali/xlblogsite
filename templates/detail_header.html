@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href={% static '../static/css/style.css' %} type="text/css" rel="stylesheet">
+    <title>悉知技术博客-星链组</title>
+    <link rel='stylesheet'
+          href={% static '../static/css/style.min.css' %} type='text/css'/>
+    <link rel='stylesheet'
+          href={% static '../static/css/googlecode.css' %} type='text/css'/>
+    <link rel='stylesheet'
+          href={% static '../static/css/pure-highlight.css' %} type='text/css' media='all'/>
+    <link rel='stylesheet'
+          href={% static '../static/highlight/default.min.css' %} type='text/css' media='all'/>
+    <script type='text/javascript' src={% static '../static/js/jquery.min.js' %}></script>
+    <script type='text/javascript' src={% static '../static/js/script.js' %}></script>
+    <script type='text/javascript' src={% static '../static/js/prettify.js' %}></script>
+    <script type='text/javascript' src={% static '../static/js/instantclick.min.js' %}></script>
+    <script type='text/javascript' src={% static '../static/highlight/highlight.min.js' %}></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <section class="container">
+        <hgroup itemscope itemtype="https://schema.org/WPHeader">
+            <h1 class="fullname">
+                {% block title %}{% endblock title %}
+            </h1>
+        </hgroup>
+        <nav class="social">
+            <ul id="menu-share" class="menu">
+                <li style="background: url({% static '../static/img/github.jpg' %}) no-repeat; background-size: 100% 100%; width: 30px;height: 20px">
+                    <a title="GitHub" href="https://github.com/">GitHub</a></li>
+                <li style="background: url('/static/img/work.png') no-repeat; background-size: 100% 100%; width: 20px;height: 20px">
+                   <a title="后台" target="_blank" href="https://wiki.xzteam.com/login/">后台</a></li>
+            </ul>
+        </nav>
+        <nav class="header_nav">
+            <ul id="menu-menu" class="menu">
+
+                <li id="menu-item-11"
+                    class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-11">
+                    <a href="/article/p1.html/">首页</a></li>
+                {% for i in context_c %}
+{#                    {{ i }}#}
+                     <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a
+                        href= "/{{ i.1 }}/p1.html/">{{ i.0 }}</a></li>
+                {% endfor %}
+{#                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a#}
+{#                        href="/article_1/">python</a></li>#}
+{#                <li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a#}
+{#                        href="/article_2/">linux</a></li>#}
+{#                <li id="menu-item-43" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-43">#}
+{#                    <a href="/article_3/">spark</a></li>#}
+{#                <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">#}
+{#                    <a href="/article_4/">mysql</a></li>#}
+{#                <li id="menu-item-43" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-43">#}
+{#                    <a href="/article_5/">redis</a></li>#}
+{#                <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">#}
+{#                    <a href="/article_6/">mongo</a></li>#}
+{#                <li id="menu-item-43" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-43">#}
+{#                    <a href="/article_7/">开发工具</a></li>#}
+{#                <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">#}
+{#                    <a href="/article_8/">vue.js </a></li>#}
+            </ul>
+        </nav>
+    </section>
+    {% block info %}{% endblock %}
+
+</header>
+
+<section class="container main-load">
+    <article class="post_article" itemscope itemtype="https://schema.org/Article">
+        {% block content %}{% endblock content %}
+    </article>
+</section>
+<section class="comments">
+    <div class="container" data-no-instant>
+        {% block comment %}{% endblock %}
+    </div>
+</section>
+
+<footer class="footer">
+    <section class="container">
+        <ul id="menu-footer" class="menu">
+            <li id="menu-item-31" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a
+                    href="//www.gongchang.com">工厂网</a></li>
+            <li id="menu-item-30" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30"><a
+                    href="//work.westarchain.com">星链</a></li>
+            <li id="menu-item-129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-129"><a
+                    href="//test.work.xingkuang.com">星矿</a></li>
+            <li id="menu-item-129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-129"><a
+                    target="_blank" href="https://wiki.xzteam.com/login/">管理后台</a></li>
+        </ul>
+        <p  style="text-align: center">
+            <span >&copy; 2019 <a href="javascript:;">悉知技术博客-星链组</a></span>
+
+        </p>
+    </section>
+</footer>
+</body>
+<script>
+    function getUrlParam() {
+        var url = (location.search); //获取url中"?"符后的字符串包括‘？’ ，window.location.href获取的是url完整的字符串
+        var theParam = new Object();
+        if (url.indexOf("?") != -1) { //确保‘？’不是最后一个字符串，即携带的参数不为空
+            var str = url.substr(1); //substr是字符串的用法之一，抽取指定字符的数目，这里抽取？后的所有字符
+            strs = str.split("&"); //将获取到的字符串从&分割，输出参数数组，即输出[参数1=xx,参数2=xx,参数3=xx,...]的数组形式
+            for (var i = 0; i < strs.length; i++) { //遍历参数数组
+                theParam[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]); //这里意思是抽取每个参数等号后面的值，unescape是解码的意思
+            }
+        }
+        return theParam; //返回参数值
+    }
+
+    var cid = getUrlParam().cid
+    if (cid) {
+        $('#menu-menu li').eq(cid).addClass('current-menu-item').siblings().removeClass('current-menu-item')
+    }
+</script>
+{% block script %}{% endblock %}
+</html>

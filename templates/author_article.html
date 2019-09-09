@@ -1,0 +1,73 @@
+{% extends 'base_header.html' %}
+{% block title %}
+    个人中心
+{% endblock %}
+{% block myInfo %}
+    {#    <div style="position: absolute;right: -40px;top: 4px;">#}
+    {#        <a style="background: #0000cc; color: #ffffff" href="/article/add_article/?uid={{ uid }}">新增</a>#}
+    {#    </div>#}
+{% endblock %}
+{% block content %}
+    <section class="posts main-load">
+        <div class="container">
+            <div class="post-list">
+                {% for i in context %}
+
+                    <article class="meta" itemscope="" itemtype="http://schema.org/BlogPosting">
+                        <header>
+                            {% load url from future %}
+                            <a href="{% url 'article_detail' i.aid %}" itemprop="url"><h2
+                                    itemprop="name headline">
+                                {{ i.title }}</h2>
+                            </a>
+                        </header>
+                        <main>
+                            <p itemprop="articleBody">
+                                {{ i.summary|safe }}
+                        </main>
+                        <footer>
+                            <span class="time"><time datetime="2019-07-14T22:44:30+00:00" itemprop="datePublished"
+                                                     pubdate>{{ i.addtime }}</time>发布</span>
+                            <span class="hr"></span>
+                            <span class="comments">{{ i.column_name }} </span>
+                            {#                            <span style="margin-left: 10px;"><a href="/article/edit_article/?aid={{ i.aid }}&cid={{ i.cid }}&uid={{ uid }}" itemprop="url">#}
+                            {#                                编辑#}
+                            {#                            </a></span>#}
+                            <form style="display: inline-block;margin-left: 10px; cursor: pointer"
+                                  action="/article/del_article/" method="get">
+                                <input type="text" style="display: none" name="uid" value="{{ uid }}">
+                                <input type="text" style="display: none" name="aid" value="{{ i.aid }}">
+                                {#                                <button type="submit">删除</button>#}
+                            </form>
+                            {#                            <span style="margin-left: 10px;"><a href="javascript:;">#}
+                            {##}
+                            {#                            </a></span>#}
+
+                            {#                            <span class="hr"></span><span class="likes">{{ i.like_num }} 人喜欢</span>#}
+                        </footer>
+                    </article>
+                {% endfor %}
+
+
+
+                <!--<nav class="reade_more">-->
+                <!--    <a href="/archives">Reade more...</a>-->
+                <!--</nav>-->
+                <nav class="reade_more">
+                    {% for i in page_num %}
+                        {% if i == pindex %}
+                            <span class='page-numbers current'>
+                             {{ i }}
+                             </span>
+                        {% else %}
+                            {% load url from future %}
+                            {#                            <a class='page-numbers' href="/visitor/article/?page={{ i }}">{{ i }}</a>#}
+                            <a class='page-numbers' href="{% url 'author_article' uid i %}">{{ i }}</a>
+                            {#                            <a href="{% url 'info' uid %}" >文章管理</a>#}
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+            </div>
+        </div>
+    </section>
+{% endblock %}

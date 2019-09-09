@@ -1,0 +1,161 @@
+
+
+
+{% extends 'detail_header.html' %}
+{% load staticfiles %}
+{% block title %}   {{ context.title }}    {% endblock %}
+{% block info %}
+    <section class="infos">
+        <div class="container">
+            <h2 class="fixed-title"></h2>
+            <!--<div class="fixed-menus"></div>-->
+
+            <div class="fields">
+                <span> {{ context.addtime }} </span> /
+                <span>{{ context.comment_count }}评论 </span> /
+                <a href="javascript:;"  id="like">
+                    <span class="count">{{ context.like_num }} </span>赞
+                </a>
+            </div>
+
+            <div class="socials">
+                {% load url from future %}
+                作者：
+                <a href="{% url 'author_article' uid 1 %}">
+                    {{ context.author }}
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+    <pre>
+            {{ context.content|safe }}
+
+    </pre>
+{% endblock %}
+{% block comment %}
+    <ol class="commentlist">
+        {% for i in comments %}
+            <li class="comment even thread-even depth-1" id="comment-120">
+                <div id="div-comment-120" class="comment-body">
+                    <div class="comment-author vcard">
+                        <img alt=''
+                             src={% static '../static/img/user.jpg' %}
+                                     class='avatar avatar-32 photo' height='32' width='32'/> <cite
+                            class="fn">{{ i.conment_username }}</cite><span
+                            class="says">说道：</span></div>
+
+                    <div class="comment-meta commentmetadata"><a href="javascript:;">
+                        {{ i.conment_addtime }}</a></div>
+
+                    <p>{{ i.comment_content }}</p>
+
+                    {#                    <div class="reply"><a rel='nofollow' class='comment-reply-link'#}
+                    {#                                          href='https://riji.io/222?replytocom=120#respond'#}
+                    {#                                          onclick='return addComment.moveForm( "div-comment-120", "120", "respond", "222" )'#}
+                    {#                                          aria-label='回复给zkp'>回复</a></div>#}
+                </div>
+            </li><!-- #comment-## -->
+        {% endfor %}
+    </ol>
+
+    <div class="navigation">
+        <div class="alignleft"></div>
+        <div class="alignright"></div>
+    </div>
+    <div id="respond" class="comment-respond">
+        <h3 id="reply-title" class="comment-reply-title">发表评论
+            <small><a rel="nofollow" id="cancel-comment-reply-link" href="/225#respond" style="display:none;">取消回复</a>
+            </small>
+        </h3>
+
+        <form action="/add_comment/?aid={{ context.aid }}&cid={{ context.cid }}" method="post" id="commentform"
+              class="comment-form">
+            <p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span
+                    class="required">*</span>标注</p>
+            <p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input
+                    id="author" name="comment_name" type="text" value="" size="30" maxlength="245"
+                    required='required'/></p>
+            <p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment"
+                                                                                      name="content" cols="45"
+                                                                                      rows="8" maxlength="65525"
+                                                                                      required="required"></textarea>
+            </p>
+            <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论"/>
+                <input type='hidden' name='comment_post_ID' value='225' id='comment_post_ID'/>
+                <input type='hidden' name='comment_parent' id='comment_parent' value='0'/>
+            </p>
+        </form>
+    </div>
+
+    </section>
+{% endblock %}
+{% block script %}
+    <script>
+        var likeArr = JSON.parse(localStorage.getItem('like_ids'))
+        if (likeArr) {
+            if (likeArr.includes({{ aid }})) {
+                $('#like').addClass('done')
+            }
+        }
+
+
+        $('#like').on('click', function () {
+            var likeArr = JSON.parse(localStorage.getItem('like_ids'))
+            if (likeArr) {
+                if (likeArr.includes({{ aid }})) {
+                    alert('点多了伤身体~')
+                } else {
+                    likeAction(function () {
+                        console.log(likeArr, typeof (likeArr))
+                        var likeIds = likeArr.push({{ aid }})
+                        $('#like').addClass('done')
+                        var count = $('.count').html()
+                        $('.count').html(Number(count) + 1)
+                        localStorage.setItem('like_ids', JSON.stringify(likeArr))
+                    })
+                }
+            } else {
+                likeAction(function () {
+                    var likeIds = []
+                    likeIds.push({{ aid }})
+                    localStorage.setItem('like_ids', JSON.stringify(likeIds))
+
+                    var count = $('.count').html()
+                    $('.count').html(Number(count) + 1)
+                    $('#like').addClass('done')
+                })
+
+            }
+        })
+
+        function likeAction(callback) {
+            ajaxFuction('/like_article_1/', {'aid': {{ aid }}}, function (res) {
+                if (res.data) {
+                    callback()
+                }
+            })
+        }
+
+        function ajaxFuction(ajaxUrl, data, callback) {
+            if (!Boolean(data)) {
+                data = {}
+            }
+            if (!Boolean(callback)) {
+                callback = function (_) {
+                }
+            }
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: ajaxUrl,
+                data: data,
+                success: function (res) {
+                    callback(res)
+                }
+            })
+        }
+
+    </script>
+{% endblock %}

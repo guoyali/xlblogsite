@@ -1,0 +1,21 @@
+{% extends './admin/base_login.html' %}
+{% block content %}
+{#    <form action="/article/login_handle/" method="post">#}
+    <form action="/login_handle/" method="post">
+    {% csrf_token %}
+    <div class="form-item">
+        <input type="text" name="username" placeholder="请输入用户名">
+    </div>
+
+    <div class="form-item">
+        <input type="password" name="password" placeholder="请输入密码">
+    </div>
+    <div class="form-item">
+        <button type="submit" >登录
+        </button>
+    </div>
+
+
+    <p> {{ error }}</p>
+    </form>
+{% endblock %}

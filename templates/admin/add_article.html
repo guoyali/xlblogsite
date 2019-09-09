@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!--[if lt IE 9]>
+
+<script type="text/javascript" src={% static '../static/hou/lib/html5shiv.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/lib/respond.min.js' %}></script>
+<![endif]-->
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/static/h-ui/css/H-ui.min.css' %}/>
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/lib/Hui-iconfont/1.0.8/iconfont.min.css' %}/>
+    <link rel="stylesheet" href={% static '../static/editor/css/editormd.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/admin.css' %} />
+    <!--[if lt IE 9]>
+<link href={% static '../static/hou/static/h-ui/css/H-ui.ie.css' %} rel="stylesheet" type="text/css" />
+<![endif]-->
+    <!--[if IE 6]>
+<script type="text/javascript" src={% static '../static/hou/lib/DD_belatedPNG_0.0.8a-min.js' %} ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+    <style type="text/css">
+        .ui-sortable .panel-header {
+            cursor: move
+        }
+    </style>
+    <title>星链组博客-后台</title>
+    <meta name="keywords" content="关键词,5个左右,单个8汉字以内">
+    <meta name="description" content="网站描述，字数尽量空制在80个汉字，160个字符以内！">
+</head>
+<body ontouchstart>
+<header class="navbar-wrapper">
+<div class="navbar navbar-black navbar-fixed-top">
+    <div class="container cl">
+        <a class="logo navbar-logo hidden-xs" >星链组博客-管理后台</a>
+        <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs JS-nav-toggle" href="javascript:;"></a>
+        <nav class="nav navbar-nav nav-collapse" role="navigation" id="Hui-navbar">
+            <ul class="cl">
+                <li style="margin-left: 400px;">
+                    {% load url from future %}
+                    <a href="{% url 'info' uid 1 %}" >文章管理</a>
+                </li>
+                <li>
+                    <a href="{% url 'column_list' uid %}" >分类管理</a>
+                </li>
+                <li class="dropDown dropDown_hover" style="float: right">
+                    <a href="javascript:;" class="dropDown_A">{{ username }}<img class="down-icon" src={% static '../static/img/down.png' %}></a>
+                    <ul class="dropDown-menu menu radius box-shadow">
+                        <li>
+                            <a href="javascript:;" onclick="out()">退出登陆</a>
+                        </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+
+        </nav>
+        <nav class="navbar-userbar hidden-xs"></nav>
+    </div>
+</div>
+</header>
+{#<nav class="breadcrumb"><div class="container"><a class="maincolor" href="/article/info/?uid={{ uid }}">我的文章列表</a> <span class="c-999 en">&gt;</span><span class="c-666">新增文章</span></div></nav>#}
+<nav class="breadcrumb"><div class="container"><a class="maincolor" href="{% url 'info' uid 1 %}">我的文章列表</a> <span class="c-999 en">&gt;</span><span class="c-666">新增文章</span></div></nav>
+<div class="containBox">
+    <div class="containBox-bg"></div>
+    <div class="wap-container">
+        <div class="container ui-sortable">
+            <div class="panel panel-default mt-20">
+                <div class="panel-header">新增文章</div>
+                <div class="panel-body">
+
+                    <form id="form" class="form form-horizontal responsive" action="" method="post">
+                        <div class="row" style="overflow: hidden; margin-bottom: 20px;">
+                            <div class="col-xs-4">
+                                <div class="formControls">
+                                    <input id="title" type="text" class="input-text" placeholder="请输入标题" name="title">
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <span class="select-box">
+                                    <select class="select" name="cid">
+{#                                        <option value="0">全部</option>#}
+                                        {% for i in context_c %}
+                                        <option value="{{ i.cid }}">{{ i.column_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </div>
+                            <input type="text" id="weight" class="input-text hide" placeholder="请输入标题" name="weight">
+{#                            <div class="col-xs-3">#}
+{#                                <label class="form-label col-xs-4">排序：</label>#}
+{#                                <div class="formControls skin-minimal col-xs-8">#}
+{#                                    <div id="spinner-demo"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div class="col-xs-2">
+                                <input class="btn btn-primary" id="formbtn" type="submit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+                            </div>
+                        </div>
+                        <div class="row" style="overflow: hidden;">
+                            <div class="col-xs-12">
+                                <div id="test-editormd">
+                                    <textarea name="content" class="textarea" style="display:none;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <footer class="footer mt-20">
+            <div class="container">
+                <nav class="footer-nav">
+                    <a target="_blank" href="http://www.h-ui.net/aboutHui.shtml">关于H-ui</a>
+                    <span class="pipe">|</span>
+                    <a target="_blank" href="http://www.h-ui.net/copyright.shtml">软件著作权</a>
+                    <span class="pipe">|</span>
+                    <a target="_blank" href="http://www.h-ui.net/juanzeng.shtml">感谢捐赠</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+</div>
+<!--普通弹出层-->
+<div id="modal-demo" class="modal fade middle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content radius">
+            <div class="modal-header">
+                <h3 class="modal-title">提示</h3>
+                <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+            </div>
+            <div class="modal-body">
+                <p>确定删除这条信息?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="sure({{ uid }})">确定</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src={% static '../static/hou/lib/jquery/1.9.1/jquery.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/lib/jquery-ui/1.9.1/jquery-ui.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/static/h-ui/js/H-ui.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.SuperSlide/2.1.1/jquery.SuperSlide.min.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/jquery.validate.min.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/validate-methods.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/messages_zh.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/editor/editormd.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/admin.js' %}></script>
+<script>
+    $("#spinner-demo").Huispinner({
+		value:1,
+		minValue:1,
+		maxValue:99,
+		dis:1
+	});
+
+
+
+  testEditor = editormd("test-editormd", {
+      placeholder : "此处开始编写您要发布的内容...",
+      width: "100%",
+      // autoHeight: true,
+      height: 640,
+      syncScrolling: "single",
+      path: "/static/editor/lib/",
+      saveHTMLToTextarea: false,
+      /**上传图片相关配置如下*/
+         imageUpload : true,
+         imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+         {#imageUploadURL : "/article/upload_picture/",#}
+         imageUploadURL : "/upload_picture/",
+  });
+    {#var uid = getUrlParam().uid#}
+    var uid = window.location.pathname.split('/')[2].split('.')[0]
+    $('#formbtn').on('click', function () {
+        if (!($('#title').val())) {
+            alert(' 请输入标题')
+            return false
+        }
+        {#$('#weight').val($('.amount').val())#}
+        {#if (!($('#weight').val())) {#}
+        {#    alert(' 请输入排序')#}
+        {#    return false#}
+        {#}#}
+        if (!($('.textarea').val())) {
+            alert('请输入文章内容')
+            return false
+        }
+        $('#form').attr('action', `/add_article_handle/${uid}.html`)
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+
+
+{% extends 'base_header.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    悉知技术博客-星链组
+{% endblock %}
+{% block content %}
+    <section class="posts main-load">
+        <div class="container">
+            <div class="post-list">
+            {% load url from future %}
+                {% if context|wordcount > 1 %}
+
+               <article class="meta">
+                        <header>
+                       {% load url from future %}
+{#                            <a href="{% url 'article_detail' context_top.aid %}" itemprop="url"><h2#}
+{#                                    itemprop="name headline">#}
+{#                                {{ context_top.title }}#}
+{#                                <span style="color:#2064fb">[置顶🔝]</span>#}
+{#                            </h2>#}
+{#                            </a>#}
+
+{#                        </header>#}
+{#                        <main class="main-box">#}
+{#                            {{ context_top.summary|safe }}#}
+{#                        </main>#}
+{#                        <footer>#}
+{#                        <span class="time"><time datetime="2019-07-14T22:44:30+00:00" itemprop="datePublished"#}
+{#                                                 pubdate>{{ context_top.addtime }}</time>发布</span>#}
+{#                            <span class="hr"></span>#}
+{#                            <span class="comments">{{ context_top.comment_count }} 条评论</span>#}
+{#                            <span class="hr"></span><span class="likes">{{ context_top.like_num }} 人喜欢</span></footer>#}
+{#                    </article>#}
+
+
+                    {% for i in context %}
+                        <article class="meta">
+                            <header>
+                                {% load url from future %}
+                                <a href="{% url 'article_detail' i.aid %}" itemprop="url"><h2
+                                        itemprop="name headline">
+                                    {{ i.title }}</h2>
+                                </a>
+
+                            </header>
+                            <main class="main-box">
+                                {{ i.summary|safe }}
+                            </main>
+                            <footer>
+                            <span class="time"><time datetime="2019-07-14T22:44:30+00:00" itemprop="datePublished"
+                                                     pubdate>{{ i.addtime }}</time>发布</span>
+                                <span class="hr"></span>
+                                <span class="comments">{{ i.comment_count }} 条评论</span>
+                                <span class="hr"></span><span class="likes">{{ i.like_num }} 人喜欢</span></footer>
+                        </article>
+                    {% endfor %}
+
+                {% else %}
+                    <img style="width: 80%" src="{% static '../static/img/empty.jpg' %}"/>
+
+                {% endif %}
+                <nav class="reade_more">
+                    {% for i in page_num %}
+                        {% if i == pindex %}
+                            <span class='page-numbers current'>
+                             {{ i }}
+                             </span>
+                        {% else %}
+                            {% load url from future %}
+                            {#                            <a class='page-numbers' href="/visitor/article/?page={{ i }}">{{ i }}</a>#}
+                            <a class='page-numbers' href="{% url 'article' i %}">{{ i }}</a>
+                            {#                            <a href="{% url 'info' uid %}" >文章管理</a>#}
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

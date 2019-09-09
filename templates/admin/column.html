@@ -1,0 +1,276 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!--[if lt IE 9]>
+
+<script type="text/javascript" src={% static '../static/hou/lib/html5shiv.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/lib/respond.min.js' %}></script>
+<![endif]-->
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/static/h-ui/css/H-ui.min.css' %}/>
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/lib/Hui-iconfont/1.0.8/iconfont.min.css' %}/>
+    <link rel="stylesheet" type="text/css" href={% static '../static/hou/admin.css' %}/>
+    <!--[if lt IE 9]>
+<link href={% static '../static/hou/static/h-ui/css/H-ui.ie.css' %} rel="stylesheet" type="text/css" />
+<![endif]-->
+    <!--[if IE 6]>
+<script type="text/javascript" src={% static '../static/hou/lib/DD_belatedPNG_0.0.8a-min.js' %} ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<script type="text/javascript" src={% static '../static/js/draggable.js' %}></script>
+    <style type="text/css">
+        .ui-sortable .panel-header {
+            cursor: move
+        }
+    </style>
+    <title>星链组博客-后台</title>
+    <meta name="keywords" content="关键词,5个左右,单个8汉字以内">
+    <meta name="description" content="网站描述，字数尽量空制在80个汉字，160个字符以内！">
+</head>
+<body ontouchstart>
+<div class="containBox">
+    <div class="containBox-bg"></div>
+    <header class="navbar-wrapper">
+        <div class="navbar navbar-black navbar-fixed-top">
+            <div class="container cl">
+                <a class="logo navbar-logo hidden-xs">星链组博客-管理后台</a>
+                <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs JS-nav-toggle" href="javascript:;">&#xe667;</a>
+                <nav class="nav navbar-nav nav-collapse" role="navigation" id="Hui-navbar">
+                    <ul class="cl">
+                        {% load url from future %}
+                        <li style="margin-left: 400px;">
+                            <a href="{% url 'info' uid  1 %}">文章管理</a>
+                        </li>
+                        <li class="current">
+                            <a href="{% url 'column_list' uid %}">分类管理</a>
+                        </li>
+                        <li class="dropDown dropDown_hover" style="float: right">
+                            <a href="javascript:;" class="dropDown_A">{{ username }}<img class="down-icon"
+                                                                                         src={% static '../static/img/down.png' %}></a>
+                            <ul class="dropDown-menu menu radius box-shadow">
+                                <li>
+                                    <a href="javascript:;" onclick="out({{ uid }})">退出登陆</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </nav>
+                <nav class="navbar-userbar hidden-xs"></nav>
+            </div>
+        </div>
+    </header>
+    <div class="wap-container">
+        <div class="container ui-sortable">
+            <div style="overflow: hidden;">
+                {#                <h1 style="float: left;">分类管理</h1>#}
+                {#                <a style="background: #0000cc; color: #ffffff" href="/article/add_article/?uid={{ uid }}">#}
+
+            </div>
+            <div class="panel panel-default mt-20">
+                <div class="panel-header">分类管理</div>
+                <div class="panel-body">
+                    <form action="" style="margin-top: 70px;" method="post" class="form form-horizontal responsive"
+                          id="form" novalidate="novalidate">
+                        <div class="row cl">
+
+                            <label class="form-label col-xs-3">标签：</label>
+                            <div class="formControls col-xs-8" id="draggable">
+                                {% for i in context %}
+                                    <span id={{ i.cid }}  class="label-item">{{ i.column_name }}<img class="close-icon"
+                                                                                     onclick="modaldemo({{ i.num }}, {{ i.cid }})"
+                                                                                     src={% static '../static/img/close.png' %}></span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-3">新标签：</label>
+                            <div class="formControls col-xs-4">
+                                <input id="label-input" type="text" class="input-text" placeholder="请输入标签名称"
+                                       name="column_name" id="username">
+                            </div>
+                        </div>
+                        <input type="text" id="weight" class="input-text hide" placeholder="请输入标题" name="sort">
+{#                        <div class="row cl">#}
+{#                            <label class="form-label col-xs-3">排序：</label>#}
+{#                            <div class="formControls skin-minimal col-xs-8">#}
+{#                                <div id="spinner-demo"></div>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <div class="row cl">
+                            <div class="col-xs-8 col-xs-offset-3">
+                                <input id="formbtn" class="btn btn-primary" type="submit"
+                                       value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <footer class="footer mt-20">
+            <div class="container">
+                <nav class="footer-nav">
+                    <a target="_blank" href="http://www.h-ui.net/aboutHui.shtml">关于H-ui</a>
+                    <span class="pipe">|</span>
+                    <a target="_blank" href="http://www.h-ui.net/copyright.shtml">软件著作权</a>
+                    <span class="pipe">|</span>
+                    <a target="_blank" href="http://www.h-ui.net/juanzeng.shtml">感谢捐赠</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+</div>
+<!--普通弹出层-->
+<div id="modal-demo" class="modal fade middle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content radius">
+            <div class="modal-header">
+                <h3 class="modal-title">提示</h3>
+                <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+            </div>
+            <div class="modal-body">
+                <p class="modal-info">确定删除该标签?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="delect" onclick="sure()">确定</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src={% static '../static/hou/lib/jquery/1.9.1/jquery.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/lib/jquery-ui/1.9.1/jquery-ui.min.js' %}></script>
+<script type="text/javascript" src={% static '../static/hou/static/h-ui/js/H-ui.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.SuperSlide/2.1.1/jquery.SuperSlide.min.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/jquery.validate.min.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/validate-methods.js' %}></script>
+<script type="text/javascript"
+        src={% static '../static/hou/lib/jquery.validation/1.14.0/messages_zh.min.js' %}></script>
+<script>
+    $("#spinner-demo").Huispinner({
+        value: 1,
+        minValue: 1,
+        maxValue: 99,
+        dis: 1
+    });
+
+    //弹窗显示
+    function modaldemo(num, cid) {
+        $('#delect').attr('num', num)
+        $('#delect').attr('cid', cid)
+        $("#modal-demo").modal("show");
+        $('.modal-info').html('')
+        if (num) {
+            $('.modal-info').html('有文章的标签不能删除哦！')
+        } else {
+            $('.modal-info').html('确定删除该标签？')
+        }
+    }
+
+    // 确定删除
+    function sure() {
+        var cid = $('#delect').attr('cid')
+        var num = $('#delect').attr('num')
+        if (!Number(num)) {
+            ajaxFuction('/del_column/', {'cid': cid}, function (res) {
+                if (res.data) {
+                    $("#modal-demo").modal("hide");
+                    window.location.href = '/column_list/{{ uid }}.html'
+                }
+            })
+        } else {
+            $("#modal-demo").modal("hide");
+        }
+    }
+
+    $('#formbtn').on('click', function () {
+        console.log(document.getElementsByClassName('label-item').length)
+        var labelNum = document.getElementsByClassName('label-item').length
+        if (labelNum >= 8) {
+            alert('最多添加8个分类哦')
+
+        } else {
+
+            {#$('#weight').val($('.amount').val())#}
+            {#if (!($('#weight').val())) {#}
+            {#    alert(' 请输入排序')#}
+            {#    return false#}
+            {#}#}
+            if (!($('#label-input').val())) {
+                alert('请输入分类名称')
+                return false
+            }
+            $('#form').attr('action', `/add_column/{{ uid }}.html`)
+        }
+
+    })
+
+
+    // 退出登陆
+    function out(uid) {
+        {#ajaxFuction('/article/quit/', {'uid': uid}, function (res) {#}
+        ajaxFuction('/quit/', {'uid': uid}, function (res) {
+            if (res.data) {
+                {#window.location.href = '/article/login'#}
+                window.location.href = '/login'
+            }
+        })
+    }
+
+    function ajaxFuction(ajaxUrl, data, callback) {
+        if (!Boolean(data)) {
+            data = {}
+        }
+        if (!Boolean(callback)) {
+            callback = function (_) {
+            }
+        }
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: ajaxUrl,
+            data: data,
+            success: function (res) {
+                callback(res)
+            }
+        })
+    }
+
+     var el = document.getElementById('draggable');
+      var sortable = Sortable.create(el, {
+        onEnd: function (evt) { //拖拽完毕之后发生该事件
+            var ary = []
+          for (var i = 0, len = evt.from.children.length; i < len; i++) {
+           ary.push(evt.from.children[i].getAttribute('id')/1)
+          }
+          //然后请求后台ajax 这样就完成了拖拽排序
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/get_column/',
+            data: {ids:JSON.stringify(ary)},
+            success: function (res) {
+               if(res.data){
+                   alert('排序成功')
+               }
+            }
+        })
+        }
+      });
+
+
+</script>
+</body>
+</html>
